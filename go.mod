@@ -1,6 +1,6 @@
 module github.com/elastic/beats/v7
 
-go 1.17
+go 1.19
 
 require (
 	cloud.google.com/go/bigquery v1.8.0
@@ -28,6 +28,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v0.24.0
 	github.com/awslabs/goformation/v4 v4.1.0
 	github.com/awslabs/kinesis-aggregation/go v0.0.0-20200810181507-d352038274c0
+	github.com/believems/impala-thrift v0.13.1
 	github.com/blakesmith/ar v0.0.0-20150311145944-8bd4349a67f2
 	github.com/bsm/sarama-cluster v2.1.14-0.20180625083203-7e67d87a6b3f+incompatible
 	github.com/cavaliercoder/go-rpm v0.0.0-20190131055624-7a9c54e3d83e
@@ -170,6 +171,8 @@ require (
 	go.mongodb.org/mongo-driver v1.5.1
 )
 
+require github.com/apache/thrift v0.13.1-0.20200603211036-eac4d0c79a5f
+
 require (
 	cloud.google.com/go v0.99.0 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20190809170250-f77fb823c7ee // indirect
@@ -186,7 +189,6 @@ require (
 	github.com/Azure/go-autorest/logger v0.2.1 // indirect
 	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
 	github.com/akavel/rsrc v0.8.0 // indirect
-	github.com/apache/thrift v0.13.1-0.20200603211036-eac4d0c79a5f // indirect
 	github.com/apoydence/eachers v0.0.0-20181020210610-23942921fe77 // indirect
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect

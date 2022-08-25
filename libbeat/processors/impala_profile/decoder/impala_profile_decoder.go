@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/elastic/beats/v7/libbeat/processors/impala_profile/thrift/impala/runtimeprofile"
+	"github.com/believems/impala-thrift/runtimeprofile"
 	"io"
 	"regexp"
 	"strconv"
