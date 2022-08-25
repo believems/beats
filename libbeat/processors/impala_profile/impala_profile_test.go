@@ -70,26 +70,25 @@ var impalaProfileCases = map[string]struct {
 	wantErr  bool
 }{
 	"impala_profile_default": {
-		cfg: conf.MustNewConfigFrom(mapstr.M{
-			"target_fields": []string{"timestamp", "domain", "path", "logLevel", "eventName", "threadName", "profile", "extend"},
-		}),
+		cfg: conf.MustNewConfigFrom(mapstr.M{}),
 		in: mapstr.M{
 			"message": rawLine,
 		},
 		want: mapstr.M{
-			"domain":     "Impala",
-			"eventName":  "Profile",
-			"extend":     queryId,
-			"logLevel":   "INFO",
-			"message":    rawLine,
-			"profile":    profile,
-			"threadName": "MAIN",
-			"timestamp":  timestamp,
+			"impala_profile": mapstr.M{
+				"timestamp":  timestamp,
+				"query_id":   queryId,
+				"profile":    profile,
+				"domain":     "Impala",
+				"eventName":  "Profile",
+				"logLevel":   "INFO",
+				"threadName": "MAIN",
+			},
+			"message": rawLine,
 		},
 	},
-	"impala_profile_custom_target": {
+	"impala_profile_custom_mapping": {
 		cfg: conf.MustNewConfigFrom(mapstr.M{
-			"target_fields": []string{"timestamp", "profile", "extend"},
 			"const_mappings": mapstr.M{
 				"domain":     "Impala",
 				"logLevel":   "DEBUG",
@@ -101,31 +100,16 @@ var impalaProfileCases = map[string]struct {
 			"message": rawLine,
 		},
 		want: mapstr.M{
-			"extend":    queryId,
-			"message":   rawLine,
-			"profile":   profile,
-			"timestamp": timestamp,
-		},
-	},
-	"impala_profile_custom_target2": {
-		cfg: conf.MustNewConfigFrom(mapstr.M{
-			"target_fields": []string{"timestamp", "profile", "extend", "domain"},
-			"const_mappings": mapstr.M{
+			"impala_profile": mapstr.M{
+				"timestamp":  timestamp,
+				"query_id":   queryId,
+				"profile":    profile,
 				"domain":     "Impala",
-				"logLevel":   "DEBUG",
 				"eventName":  "Profile",
+				"logLevel":   "DEBUG",
 				"threadName": "MAIN",
 			},
-		}),
-		in: mapstr.M{
 			"message": rawLine,
-		},
-		want: mapstr.M{
-			"extend":    queryId,
-			"message":   rawLine,
-			"profile":   profile,
-			"timestamp": timestamp,
-			"domain":    "Impala",
 		},
 	},
 }

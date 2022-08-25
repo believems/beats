@@ -9,7 +9,7 @@ import (
 
 type ImpalaProfile struct {
 	Timestamp time.Time `json:"timestamp"`
-	QueryId   string    `json:"queryId"`
+	QueryId   string    `json:"query_id"`
 	Profile   string    `json:"profile"`
 }
 

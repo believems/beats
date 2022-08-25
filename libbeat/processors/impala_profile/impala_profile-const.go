@@ -24,7 +24,7 @@ var instanceID = atomic.MakeUint32(0)
 // config defines the configuration for this processor.
 type config struct {
 	Field         string   `config:"field" validate:"required"`
-	Target        []string `config:"target_fields"`
+	Target        string   `config:"target_field"`
 	Const         mapstr.M `config:"const_mappings"`
 	OverwriteKeys bool     `config:"overwrite_keys"`
 	IgnoreMissing bool     `config:"ignore_missing"`

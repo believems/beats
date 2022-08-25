@@ -1,0 +1,23 @@
+# rm -fr data logs
+# ./filebeat -e --strict.perms=false -c tests/files/impala-profile-config.yml
+filebeat.inputs:
+  - type: filestream
+    enabled: true
+    # 收集路径
+    paths:
+      - ${PWD}/tests/files/logs/impala_profile_log*
+    tail_files: false
+    recursive_glob.enabled: true
+    tags: [ "impala_profile" ]
+
+processors:
+  - impala_profile:
+      field: message
+      overwrite_keys: true
+      ignore_missing: false
+      ignore_failure: false
+output.console:
+  pretty: true
+#  file:
+#    path: "/tmp/"
+#    filename: fb_impala_profile
