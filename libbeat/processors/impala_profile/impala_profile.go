@@ -21,10 +21,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	decoder "github.com/believems/impala-profile-decode"
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/processors"
 	"github.com/elastic/beats/v7/libbeat/processors/checks"
-	"github.com/elastic/beats/v7/libbeat/processors/impala_profile/decoder"
 	jsprocessor "github.com/elastic/beats/v7/libbeat/processors/script/javascript/module/processor"
 	conf "github.com/elastic/elastic-agent-libs/config"
 	"github.com/elastic/elastic-agent-libs/logp"
@@ -144,8 +144,10 @@ func (p *processor) run(event *beat.Event) error {
 	} else {
 		p.stats.Success.Inc()
 	}
-	valueMap.DeepUpdate(p.Const)
-	event.PutValue(p.Target, valueMap)
+	for k, v := range p.Const {
+		valueMap[k] = v
+	}
+	event.PutValue(p.Target, mapstr.M(valueMap))
 	return err
 }
 

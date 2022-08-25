@@ -28,7 +28,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v0.24.0
 	github.com/awslabs/goformation/v4 v4.1.0
 	github.com/awslabs/kinesis-aggregation/go v0.0.0-20200810181507-d352038274c0
-	github.com/believems/impala-thrift v0.13.1
+	github.com/believems/impala-thrift v0.16.0 // indirect
 	github.com/blakesmith/ar v0.0.0-20150311145944-8bd4349a67f2
 	github.com/bsm/sarama-cluster v2.1.14-0.20180625083203-7e67d87a6b3f+incompatible
 	github.com/cavaliercoder/go-rpm v0.0.0-20190131055624-7a9c54e3d83e
@@ -171,7 +171,10 @@ require (
 	go.mongodb.org/mongo-driver v1.5.1
 )
 
-require github.com/apache/thrift v0.13.1-0.20200603211036-eac4d0c79a5f
+require (
+	github.com/apache/thrift v0.16.0 // indirect
+	github.com/believems/impala-profile-decode v0.16.0
+)
 
 require (
 	cloud.google.com/go v0.99.0 // indirect
