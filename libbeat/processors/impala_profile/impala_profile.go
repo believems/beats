@@ -61,10 +61,10 @@ func defaultConfig() config {
 		Field:  "message",
 		Target: procName,
 		Const: mapstr.M{
-			"domain":     "Impala",
-			"logLevel":   "INFO",
-			"eventName":  "Profile",
-			"threadName": "MAIN",
+			"application": "Impala",
+			"log_level":   "INFO",
+			"component":   "Profile",
+			"thread_name": "MAIN",
 		},
 		OverwriteKeys: true,
 	}
@@ -138,16 +138,19 @@ func (p *processor) run(event *beat.Event) error {
 	} else {
 		p.stats.Success.Inc()
 	}
-	valueMap, err := impalaProfile.StringMap()
-	if err != nil {
-		p.stats.Failure.Inc()
-	} else {
-		p.stats.Success.Inc()
-	}
+	valueData := mapstr.M{}
+	_, _ = valueData.Put("timestamp", impalaProfile.Timestamp)
+	_, _ = valueData.Put("msg", impalaProfile.Profile)
+	_, _ = valueData.Put("extend", mapstr.M{
+		"profile_id": impalaProfile.QueryId,
+	})
 	for k, v := range p.Const {
-		valueMap[k] = v
+		valueData[k] = v
 	}
-	event.PutValue(p.Target, mapstr.M(valueMap))
+	_, err = event.PutValue(p.Target, valueData)
+	if err != nil {
+		return err
+	}
 	return err
 }
 

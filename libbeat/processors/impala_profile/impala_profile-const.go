@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-var buildInFieldList = []string{"timestamp", "domain", "host", "path", "logLevel", "eventName", "threadName", "profile", "extend"}
+var buildInFieldList = []string{"timestamp", "host", "path", "application", "component", "log_level", "thread_name", "extend", "msg"}
 var buildInFieldListStr = strings.Join(buildInFieldList[:], ",")
 
 const (
