@@ -173,6 +173,7 @@ require (
 
 require (
 	github.com/apache/thrift v0.16.0 // indirect
+	github.com/believems/e4-log v0.0.2
 	github.com/believems/impala-profile-decode v0.16.0
 )
 

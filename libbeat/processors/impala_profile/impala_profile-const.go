@@ -1,15 +1,14 @@
 package impala_profile
 
 import (
+	"github.com/believems/e4-log"
 	"github.com/elastic/beats/v7/libbeat/common/atomic"
 	"github.com/elastic/elastic-agent-libs/logp"
 	"github.com/elastic/elastic-agent-libs/mapstr"
 	"github.com/elastic/elastic-agent-libs/monitoring"
-	"strings"
 )
 
-var buildInFieldList = []string{"timestamp", "host", "path", "application", "component", "log_level", "thread_name", "extend", "msg"}
-var buildInFieldListStr = strings.Join(buildInFieldList[:], ",")
+var buildInFieldList = e4_log.E4LogFields
 
 const (
 	procName   = "impala_profile"

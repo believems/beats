@@ -21,6 +21,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/believems/e4-log"
+
 	decoder "github.com/believems/impala-profile-decode"
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/processors"
@@ -77,6 +79,8 @@ func New(c *conf.C) (processors.Processor, error) {
 	if err := c.Unpack(&cfg); err != nil {
 		return nil, fmt.Errorf("fail to unpack the "+procName+" processor configuration: %w", err)
 	}
+
+	e4_log.CheckMapKey(cfg.Const)
 
 	id := int(instanceID.Inc())
 	log := logp.NewLogger(logName).With("instance_id", id)

@@ -242,6 +242,8 @@ github.com/awslabs/goformation/v4 v4.1.0 h1:JRxIW0IjhYpYDrIZOTJGMu2azXKI+OK5dP56
 github.com/awslabs/goformation/v4 v4.1.0/go.mod h1:MBDN7u1lMNDoehbFuO4uPvgwPeolTMA2TzX1yO6KlxI=
 github.com/awslabs/kinesis-aggregation/go v0.0.0-20200810181507-d352038274c0 h1:D97PNkeea5i2Sbq844BdbULqI5pv7yQw4thPwqEX504=
 github.com/awslabs/kinesis-aggregation/go v0.0.0-20200810181507-d352038274c0/go.mod h1:SghidfnxvX7ribW6nHI7T+IBbc9puZ9kk5Tx/88h8P4=
+github.com/believems/e4-log v0.0.2 h1:o5v6OavpSHrhevhev5XfkCCIIluQzOeaGWx//8C24fk=
+github.com/believems/e4-log v0.0.2/go.mod h1:ZPysQwbSQbaiuSq2Sn4+C8jLFtYx1hp9ZoAeTfcpBbM=
 github.com/believems/impala-profile-decode v0.16.0 h1:QtIjCg4p1fOwQbIbXwgTgZySd7RSDeAIp26rTVcjeGs=
 github.com/believems/impala-profile-decode v0.16.0/go.mod h1:sKQgFtjXyl7vU0HxEBBlHjvmq9tib2d3Uz2kHLXWTxE=
 github.com/believems/impala-thrift v0.16.0 h1:o+NYdlFSOiBqGO0kCohb3uODtc8bVNbWZD/GKuU4JyU=
