@@ -1,0 +1,9 @@
+- key: impala
+  title: "impala"
+  description: >
+    impala Module
+  fields:
+    - name: impala
+      type: group
+      description: >
+      fields:

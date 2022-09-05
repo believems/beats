@@ -1,0 +1,21 @@
+{
+    "description": "Pipeline for parsing impala profile logs",
+    "processors": [
+        {
+            "impala_profile": {
+                "field": "message",
+                "overwrite_keys": true,
+                "ignore_missing": false,
+                "ignore_failure": false
+            }
+        }
+    ],
+    "on_failure": [
+        {
+            "set": {
+                "field": "error.message",
+                "value": "{{ _ingest.on_failure_message }}"
+            }
+        }
+    ]
+}

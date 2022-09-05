@@ -1,0 +1,9 @@
+dashboards:
+- id: Filebeat-impala-impalad-Dashboard
+  file: Filebeat-impala-impalad.json
+- id: Filebeat-impala-profile-Dashboard
+  file: Filebeat-impala-profile.json
+- id: Filebeat-impala-catalogd-Dashboard
+  file: Filebeat-impala-catalogd.json
+- id: Filebeat-impala-statestored-Dashboard
+  file: Filebeat-impala-statestored.json

@@ -1,0 +1,16 @@
+type: filestream
+paths:
+{{ range $i, $path := .paths }}
+ - {{$path}}
+{{ end }}
+exclude_files: [".gz$"]
+tail_files: true
+recursive_glob.enabled: true
+symlinks: false
+tags: ["impala", "profile"]
+processors:
+  - impala_profile:
+      field: "message"
+      overwrite_keys: true
+      ignore_missing: false
+      ignore_failure: false
