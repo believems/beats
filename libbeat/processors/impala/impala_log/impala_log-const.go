@@ -1,18 +1,14 @@
-package impala_profile
+package impala_log_parse
 
 import (
-	"github.com/believems/e4-log"
 	"github.com/elastic/beats/v7/libbeat/common/atomic"
 	"github.com/elastic/elastic-agent-libs/logp"
-	"github.com/elastic/elastic-agent-libs/mapstr"
 	"github.com/elastic/elastic-agent-libs/monitoring"
 )
 
-var buildInFieldList = e4_log.E4LogFields
-
 const (
-	procName   = "impala_profile"
-	pluginName = "ImpalaProfile"
+	procName   = "impala_log"
+	pluginName = "ImpalaLog"
 	logName    = "processor." + procName
 )
 
@@ -22,13 +18,23 @@ var instanceID = atomic.MakeUint32(0)
 // target_fields:timestamp,domain,host,path,logLevel,eventName,threadName,profile,extend
 // config defines the configuration for this processor.
 type config struct {
-	Field         string   `config:"field" validate:"required"`
-	Target        string   `config:"target_field"`
-	Const         mapstr.M `config:"const_mappings"`
-	OverwriteKeys bool     `config:"overwrite_keys"`
-	IgnoreMissing bool     `config:"ignore_missing"`
-	IgnoreFailure bool     `config:"ignore_failure"`
-	Tag           string   `config:"tag"`
+	Field         string `config:"field" validate:"required"`
+	Target        string `config:"target_field"`
+	OverwriteKeys bool   `config:"overwrite_keys"`
+	IgnoreMissing bool   `config:"ignore_missing"`
+	IgnoreFailure bool   `config:"ignore_failure"`
+	Tag           string `config:"tag"`
+}
+
+// timestamp,domain,host,logLevel,eventName,threadName,profile,extend
+// defaultConfig will return a config with default values.
+func defaultConfig() config {
+
+	return config{
+		Field:         "message",
+		Target:        procName,
+		OverwriteKeys: true,
+	}
 }
 
 // processor defines a syslog processor.

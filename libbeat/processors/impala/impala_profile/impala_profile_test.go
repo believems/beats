@@ -18,6 +18,7 @@
 package impala_profile
 
 import (
+	"github.com/elastic/beats/v7/libbeat/processors/impala"
 	"testing"
 	"time"
 
@@ -75,39 +76,17 @@ var impalaProfileCases = map[string]struct {
 			"message": rawLine,
 		},
 		want: mapstr.M{
-			"impala_profile": mapstr.M{
-				"timestamp":  timestamp,
-				"query_id":   queryId,
-				"profile":    profile,
-				"domain":     "Impala",
-				"eventName":  "Profile",
-				"logLevel":   "INFO",
-				"threadName": "MAIN",
-			},
-			"message": rawLine,
-		},
-	},
-	"impala_profile_custom_mapping": {
-		cfg: conf.MustNewConfigFrom(mapstr.M{
-			"const_mappings": mapstr.M{
-				"domain":     "Impala",
-				"logLevel":   "DEBUG",
-				"eventName":  "Profile",
-				"threadName": "MAIN",
-			},
-		}),
-		in: mapstr.M{
-			"message": rawLine,
-		},
-		want: mapstr.M{
-			"impala_profile": mapstr.M{
-				"timestamp":  timestamp,
-				"query_id":   queryId,
-				"profile":    profile,
-				"domain":     "Impala",
-				"eventName":  "Profile",
-				"logLevel":   "DEBUG",
-				"threadName": "MAIN",
+			"impala_profile": map[string]interface{}{
+				"timestamp":   timestamp,
+				"msg":         profile,
+				"application": "Impala",
+				"component":   "Profile",
+				"log_level":   "INFO",
+				"thread_name": "Profile",
+				"host":        impala.GetLocalIP(),
+				"extend": map[string]interface{}{
+					"profile_id": queryId,
+				},
 			},
 			"message": rawLine,
 		},
@@ -140,7 +119,7 @@ func TestImpalaProfile(t *testing.T) {
 	}
 }
 
-func BenchmarkSyslog(b *testing.B) {
+func BenchmarkImpalaProfile(b *testing.B) {
 	for name, bc := range impalaProfileCases {
 		bc := bc
 		b.Run(name, func(b *testing.B) {

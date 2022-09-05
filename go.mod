@@ -173,9 +173,12 @@ require (
 
 require (
 	github.com/apache/thrift v0.16.0 // indirect
-	github.com/believems/e4-log v0.0.2
+	github.com/believems/e4-log v0.0.3
 	github.com/believems/impala-profile-decode v0.16.0
+	github.com/vjeantet/grok v1.0.1
 )
+
+require github.com/itchyny/timefmt-go v0.1.4
 
 require (
 	cloud.google.com/go v0.99.0 // indirect

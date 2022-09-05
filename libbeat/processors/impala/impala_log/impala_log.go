@@ -15,15 +15,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package impala_profile
+package impala_log_parse
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/believems/e4-log"
-
-	decoder "github.com/believems/impala-profile-decode"
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/processors"
 	"github.com/elastic/beats/v7/libbeat/processors/checks"
@@ -55,23 +52,6 @@ func init() {
 	jsprocessor.RegisterPlugin(pluginName, New)
 }
 
-// timestamp,domain,host,path,logLevel,eventName,threadName,profile,extend
-// defaultConfig will return a config with default values.
-func defaultConfig() config {
-
-	return config{
-		Field:  "message",
-		Target: procName,
-		Const: mapstr.M{
-			"application": "Impala",
-			"log_level":   "INFO",
-			"component":   "Profile",
-			"thread_name": "MAIN",
-		},
-		OverwriteKeys: true,
-	}
-}
-
 // New creates a new processor from the provided configuration, or an error if the configuration is invalid.
 func New(c *conf.C) (processors.Processor, error) {
 	cfg := defaultConfig()
@@ -79,8 +59,6 @@ func New(c *conf.C) (processors.Processor, error) {
 	if err := c.Unpack(&cfg); err != nil {
 		return nil, fmt.Errorf("fail to unpack the "+procName+" processor configuration: %w", err)
 	}
-
-	e4_log.CheckMapKey(cfg.Const)
 
 	id := int(instanceID.Inc())
 	log := logp.NewLogger(logName).With("instance_id", id)
@@ -136,20 +114,15 @@ func (p *processor) run(event *beat.Event) error {
 		p.stats.Failure.Inc()
 		return fmt.Errorf("type of field %q is not a string", p.Field)
 	}
-	impalaProfile, err := decoder.DecodeImpalaProfileLine(data)
+	e4Log, err := Parse(data)
 	if err != nil {
 		p.stats.Failure.Inc()
 	} else {
 		p.stats.Success.Inc()
 	}
-	valueData := mapstr.M{}
-	_, _ = valueData.Put("timestamp", impalaProfile.Timestamp)
-	_, _ = valueData.Put("msg", impalaProfile.Profile)
-	_, _ = valueData.Put("extend", mapstr.M{
-		"profile_id": impalaProfile.QueryId,
-	})
-	for k, v := range p.Const {
-		valueData[k] = v
+	valueData, err := e4Log.StringMap()
+	if err != nil {
+		return err
 	}
 	_, err = event.PutValue(p.Target, valueData)
 	if err != nil {

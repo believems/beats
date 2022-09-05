@@ -20,14 +20,6 @@ The supported configuration options are:
 `target_field`:: (Optional) Target fields list from the processor. The
 default value is "impala_profile".
 
-`const_mappings`:: (Optional) Const key/value mapping for processor output. The
-default value is {
-                 			"domain":     "Impala",
-                 			"logLevel":   "INFO",
-                 			"eventName":  "Profile",
-                 			"threadName": "MAIN",
-                 		}.
-
 `overwrite_keys`:: (Optional) A boolean that specifies whether keys that already
 exist in the event are overwritten by keys from the syslog message. The
 default value is `true`.
