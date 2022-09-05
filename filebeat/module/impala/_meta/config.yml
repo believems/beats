@@ -1,7 +1,34 @@
+# Module: impala
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/8.3/filebeat-module-impala.html
+
 - module: impala
-  # All logs
-  {fileset}:
-    enabled: true
+  # Catalogd logs
+  catalogd:
+    enabled: false
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+  # Impalad logs
+  impalad:
+    enabled: false
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+  # Profile logs
+  profile:
+    enabled: false
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+  # Statestored logs
+  statestored:
+    enabled: false
 
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.

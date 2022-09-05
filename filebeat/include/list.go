@@ -35,6 +35,7 @@ import (
 	_ "github.com/elastic/beats/v7/filebeat/module/haproxy"
 	_ "github.com/elastic/beats/v7/filebeat/module/icinga"
 	_ "github.com/elastic/beats/v7/filebeat/module/iis"
+	_ "github.com/elastic/beats/v7/filebeat/module/impala"
 	_ "github.com/elastic/beats/v7/filebeat/module/kafka"
 	_ "github.com/elastic/beats/v7/filebeat/module/kibana"
 	_ "github.com/elastic/beats/v7/filebeat/module/logstash"

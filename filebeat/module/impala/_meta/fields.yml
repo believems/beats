@@ -1,9 +1,10 @@
 - key: impala
-  title: "impala"
+  title: "Impala"
   description: >
-    impala Module
+    Impala Module
   fields:
     - name: impala
       type: group
       description: >
+        E4_LOG: {"timestamp", "host", "application", "component", "log_level", "thread_name", "extend", "msg"}
       fields:
