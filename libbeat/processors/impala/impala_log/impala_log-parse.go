@@ -6,7 +6,6 @@ import (
 	"github.com/elastic/beats/v7/libbeat/processors/impala"
 	"github.com/vjeantet/grok"
 	"strconv"
-	"sync"
 	"time"
 )
 
@@ -17,15 +16,12 @@ const TimePattern = "2006-01-02 15:04:05"
 const LogPatternSize = 10
 const LogPattern = "%{IMPALA_LOG_LEVEL:log_level}%{MONTHNUM:month}%{MONTHDAY:day} %{TIME:time}\\.%{MICRO_SECOND:micro_second} %{NUMBER:thread_name} %{WORD:component}\\.%{WORD:line_ext}:%{NUMBER:code_line}] %{GREEDYDATA:msg}"
 
-var grokInstance *grok.Grok
-var once sync.Once
+var grokInstance *grok.Grok = nil
 
 func getInstance() *grok.Grok {
-	once.Do(func() {
-		grokInstance, _ = grok.NewWithConfig(&grok.Config{NamedCapturesOnly: true})
-		_ = grokInstance.AddPattern("IMPALA_LOG_LEVEL", "(?:[I|W|E|F]{1})")
-		_ = grokInstance.AddPattern("MICRO_SECOND", "(?:[\\d]{6})")
-	})
+	grokInstance, _ = grok.NewWithConfig(&grok.Config{NamedCapturesOnly: true})
+	_ = grokInstance.AddPattern("IMPALA_LOG_LEVEL", "(?:[I|W|E|F]{1})")
+	_ = grokInstance.AddPattern("MICRO_SECOND", "(?:[\\d]{6})")
 	return grokInstance
 }
 
