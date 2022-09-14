@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/believems/e4-log"
 	"github.com/elastic/beats/v7/libbeat/processors/impala"
-	"github.com/vjeantet/grok"
+	"regexp"
 	"strconv"
 	"time"
 )
@@ -14,16 +14,8 @@ import (
 
 const TimePattern = "2006-01-02 15:04:05"
 const LogPatternSize = 10
-const LogPattern = "%{IMPALA_LOG_LEVEL:log_level}%{MONTHNUM:month}%{MONTHDAY:day} %{TIME:time}\\.%{MICRO_SECOND:micro_second} %{NUMBER:thread_name} %{WORD:component}\\.%{WORD:line_ext}:%{NUMBER:code_line}] %{GREEDYDATA:msg}"
 
-var grokInstance *grok.Grok = nil
-
-func getInstance() *grok.Grok {
-	grokInstance, _ = grok.NewWithConfig(&grok.Config{NamedCapturesOnly: true})
-	_ = grokInstance.AddPattern("IMPALA_LOG_LEVEL", "(?:[I|W|E|F]{1})")
-	_ = grokInstance.AddPattern("MICRO_SECOND", "(?:[\\d]{6})")
-	return grokInstance
-}
+var LogPattern = regexp.MustCompile(`(?P<log_level>[IWEF])(?P<month>0?[1-9]|1[0-2])(?P<day>(0[1-9])|(([12][0-9])|(3[01])|[1-9]))\s+(?P<time>(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9]))\.(?P<micro_second>\d{6})\s+(?P<thread_name>\d+)\s+(?P<component>\b\w+\b)\.(?P<line_ext>\b\w+\b):(?P<code_line>\d+)]\s+(?P<msg>.*)`)
 
 func Parse(line string) (*e4_log.E4Log, error) {
 	data, err := parseMap(line)
@@ -33,10 +25,16 @@ func Parse(line string) (*e4_log.E4Log, error) {
 	e4log, err := buildFromMap(data)
 	return e4log, err
 }
+
 func parseMap(line string) (map[string]string, error) {
-	values, err := getInstance().Parse(LogPattern, line)
-	if err != nil {
-		return nil, err
+	match := LogPattern.FindStringSubmatch(line)
+	groupNames := LogPattern.SubexpNames()
+	values := make(map[string]string)
+	// 转换为map
+	for i, name := range groupNames {
+		if i != 0 && name != "" { // 第一个分组为空（也就是整个匹配）
+			values[name] = match[i]
+		}
 	}
 	return values, nil
 }
@@ -44,7 +42,7 @@ func parseMap(line string) (map[string]string, error) {
 func buildFromMap(values map[string]string) (*e4_log.E4Log, error) {
 	mapSize := len(values)
 	if mapSize != LogPatternSize {
-		return nil, fmt.Errorf("log Pattern Size should be %d but %d", LogPatternSize, mapSize)
+		return nil, fmt.Errorf("Log Pattern Size should be %d but %d", LogPatternSize, mapSize)
 	}
 	logLevel, err := parseLogLevel(values["log_level"])
 	if err != nil {
@@ -83,6 +81,6 @@ func parseLogLevel(str string) (string, error) {
 	case str == "F":
 		return "FATAL", nil
 	default:
-		return "", fmt.Errorf("unknown Log Level: %s", str)
+		return "", fmt.Errorf("Unknown Log Level: %s", str)
 	}
 }
